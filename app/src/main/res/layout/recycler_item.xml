@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/theme1">
+
+    <ImageView
+        android:id="@+id/RV_item_icon"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="fitXY"
+        android:layout_marginTop="40dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
+    <TextView
+        android:text="Temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:id="@+id/RV_item_temperature"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp" />
+
+    <TextView
+        android:text="Pressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/RV_item_pressure"
+        android:textSize="18sp"
+        android:layout_marginTop="160dp"/>
+
+    <TextView
+        android:text="Wind Speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="120dp"
+        android:id="@+id/RV_item_windSpeed" />
+
+    <TextView
+        android:text="City Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:id="@+id/RV_item_cityName" />
+
+    <TextView
+        android:text="Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:id="@+id/RV_item_date"
+        android:layout_marginLeft="200dp"
+        android:layout_marginStart="200dp" />
+
+    <TextView
+        android:text="Humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:id="@+id/RV_item_humidity"
+        android:layout_marginTop="200dp"/>
+    <View
+        android:layout_marginTop="230dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary" />
+
+</RelativeLayout>
