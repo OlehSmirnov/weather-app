@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,14 +23,36 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    String IMG_URL = "http://openweathermap.org/img/w/";
+    private String CITY_NAME = "London,GB";
+    private ImageView loupe;
+    private EditText inputField;
+    private TextView cityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FetchWeatherData task = new FetchWeatherData();
-        task.execute();
+        loupe = (ImageView) findViewById(R.id.loupeImg);
+        inputField = (EditText) findViewById(R.id.editCityET);
+        cityName = (TextView) findViewById(R.id.cityNameTV);
+        cityName.setText(CITY_NAME);
+        inputField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (loupe.getVisibility() == View.VISIBLE) loupe.setVisibility(View.INVISIBLE);
+                if (b) {
+                    inputField.setText("");
+                    loupe.setVisibility(View.INVISIBLE);
+                }
+                if (!b) {
+                    CITY_NAME = String.valueOf(inputField.getText());
+                    loupe.setVisibility(View.VISIBLE);
+                    inputField.setText("Type your city");
+                    new FetchWeatherData().execute();
+                }
+            }
+        });
+        new FetchWeatherData().execute();
     }
 
     class FetchWeatherData extends AsyncTask<Void, Void, String> {
@@ -38,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... params) {
             try {
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast?q=Cherkassy,us&units=metric&appid=1d0625288d8deb30b4d2ce607191b3bb");
+                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast?q=" + CITY_NAME + "&units=metric&appid=1d0625288d8deb30b4d2ce607191b3bb");
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -69,17 +95,19 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             try {
                 JSONObject dataJsonObj = new JSONObject(s);
-                System.out.println(dataJsonObj);
-                String cityName = dataJsonObj.getJSONObject("city").getString("name");
+                CITY_NAME = dataJsonObj.getJSONObject("city").getString("name")
+                        + ", " + dataJsonObj.getJSONObject("city").getString("country");
+                cityName.setText(CITY_NAME);
                 JSONArray mainWeatherList = dataJsonObj.getJSONArray("list");
                 List <WeatherItem> resultWeatherList = new ArrayList<>();
                 for (int i = 0; i < mainWeatherList.length(); i++) {
                     JSONObject weatherListItem = mainWeatherList.getJSONObject(i);
-                    String date = weatherListItem.getString("dt_txt");
+                    String unformatedDate = weatherListItem.getString("dt_txt");
+                    String date = unformatedDate.substring(5, unformatedDate.length() - 3);
 
                     JSONObject weatherListItemMain = weatherListItem.getJSONObject("main");
-                    String temperature = weatherListItemMain.getString("temp");
-                    String pressure = weatherListItemMain.getString("pressure");
+                    int temperature = weatherListItemMain.getInt("temp");
+                    int pressure = weatherListItemMain.getInt("pressure");
                     String humidity = weatherListItemMain.getString("humidity");
 
                     JSONArray weatherListItemWeather = weatherListItem.getJSONArray("weather");
@@ -87,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
                     String iconIdentifier = weatherListItemWeatherObj.getString("icon");
 
                     JSONObject windInfoItem = weatherListItem.getJSONObject("wind");
-                    String windSpeed = windInfoItem.getString("speed");
+                    int windSpeed = windInfoItem.getInt("speed");
 
-                    resultWeatherList.add(new WeatherItem(date, cityName, iconIdentifier, temperature, pressure, humidity, windSpeed));
+                    resultWeatherList.add(new WeatherItem(date, iconIdentifier, temperature, pressure, humidity, windSpeed));
                 }
                 RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
                 mRecyclerView.setHasFixedSize(true);

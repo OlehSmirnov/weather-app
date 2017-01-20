@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -10,13 +11,64 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.olegsmirnov.weatherapp.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/toolbar"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:focusable="true" />
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:id="@+id/editCityET"
+        android:background="@android:color/background_light"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/tertiary_text_dark"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="150dp"
+        android:text="type your city"
+        android:textAlignment="center" />
+
+    <ImageView
+        app:srcCompat="@drawable/loupe"
+        android:id="@+id/loupeImg"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/editCityET"
+        android:layout_alignLeft="@+id/editCityET"
+        android:layout_alignStart="@+id/editCityET"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cityNameTV"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        android:layout_alignBottom="@+id/loupeImg"
+        android:layout_toLeftOf="@+id/editCityET"
+        android:layout_toStartOf="@+id/editCityET"
+        android:layout_marginRight="17dp"
+        android:layout_marginEnd="17dp" />
 
 </RelativeLayout>

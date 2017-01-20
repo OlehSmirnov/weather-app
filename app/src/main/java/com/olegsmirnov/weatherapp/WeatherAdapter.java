@@ -28,15 +28,14 @@ class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.cityName.setText(mList.get(position).getCityName());
         holder.date.setText(mList.get(position).getDate());
         new DownloadImageTask(holder.icon).execute("http://openweathermap.org/img/w/" + mList.get(position).getIconIdentifier() + ".png");
-        char Sign = ' ';
-        if (Double.parseDouble(mList.get(position).getTemperature()) > 0) Sign = '+';
+        String Sign =  "";
+        if (mList.get(position).getTemperature() > 0) Sign = "+";
         holder.temperature.setText(Sign + mList.get(position).getTemperature()  + "°C");
         holder.pressure.setText("pressure:" + mList.get(position).getPressure() + "hpa");
         holder.humidity.setText("humidity:" + mList.get(position).getHumidity() + "%");
-        holder.windSpeed.setText("wind:" + mList.get(position).getWindSpeed() + "m/s");
+        holder.windSpeed.setText(mList.get(position).getWindSpeed() + "m/s");
     }
 
     @Override
@@ -46,7 +45,6 @@ class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.MyViewHolder> {
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView cityName;
         private TextView date;
         private ImageView icon;
         private TextView temperature;
@@ -56,7 +54,6 @@ class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.MyViewHolder> {
 
         MyViewHolder(View view) {
             super(view);
-            cityName = (TextView) view.findViewById(R.id.RV_item_cityName);
             date = (TextView) view.findViewById(R.id.RV_item_date);
             icon = (ImageView) view.findViewById(R.id.RV_item_icon);
             temperature = (TextView) view.findViewById(R.id.RV_item_temperature);

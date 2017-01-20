@@ -2,16 +2,14 @@ package com.olegsmirnov.weatherapp;
 
 class WeatherItem {
     private String date;
-    private String cityName;
     private String iconIdentifier;
-    private String temperature;
-    private String pressure;
+    private int temperature;
+    private int pressure;
     private String humidity;
-    private String windSpeed;
+    private int windSpeed;
 
-    WeatherItem(String date, String cityName, String iconIdentifier, String temperature, String pressure, String humidity, String windSpeed) {
+    WeatherItem(String date, String iconIdentifier, int temperature, int pressure, String humidity, int windSpeed) {
         this.date = date;
-        this.cityName = cityName;
         this.iconIdentifier = iconIdentifier;
         this.temperature = temperature;
         this.pressure = pressure;
@@ -23,17 +21,13 @@ class WeatherItem {
         return date;
     }
 
-    String getCityName() {
-        return cityName;
-    }
-
-    String getTemperature() {
+    int getTemperature() {
         return temperature;
     }
 
     String getIconIdentifier() { return iconIdentifier; }
 
-    String getPressure() {
+    int getPressure() {
         return pressure;
     }
 
@@ -41,7 +35,7 @@ class WeatherItem {
         return humidity;
     }
 
-    String getWindSpeed() {
+    int getWindSpeed() {
         return windSpeed;
     }
 }
