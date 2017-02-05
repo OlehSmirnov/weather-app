@@ -17,6 +17,7 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String INTENT_KEY_CONTACT6 = "intent_key_contact6";
     public static final String INTENT_KEY_CONTACT7 = "intent_key_contact7";
     public static final String INTENT_KEY_CONTACT8 = "intent_key_contact8";
+    public static final String INTENT_KEY_CONTACT9 = "intent_key_contact9";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +38,10 @@ public class DetailsActivity extends AppCompatActivity {
             String skyStatus = getIntent().getStringExtra(INTENT_KEY_CONTACT5);
             String cloudiness = getIntent().getStringExtra(INTENT_KEY_CONTACT6);
             String windSpeed = getIntent().getStringExtra(INTENT_KEY_CONTACT7);
-            String windDirection = getIntent().getStringExtra(INTENT_KEY_CONTACT8);
+            String unitsName = getIntent().getStringExtra(INTENT_KEY_CONTACT8);
+            String windDirection = getIntent().getStringExtra(INTENT_KEY_CONTACT9);
             DetailsFragment detailsFragment = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentDetails);
-            detailsFragment.updateContent(temperature, pressure, seaPressure, humidity, skyStatus, cloudiness, windSpeed, windDirection);
+            detailsFragment.updateContent(temperature, pressure, seaPressure, humidity, skyStatus, cloudiness, windSpeed, unitsName, windDirection);
         }
     }
 }

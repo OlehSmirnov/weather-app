@@ -45,14 +45,25 @@ public class DetailsFragment extends Fragment {
     }
 
     public void updateContent(String temperature, String pressure, String seaPressure, String humidity, String skyStatus,
-                              String cloudiness, String windSpeed, String windDirection) {
+                              String cloudiness, String windSpeed, String unitsName, String windDirection) {
         tvTemperature.setText("Temperature: " + temperature + "°");
         tvPressure.setText("Pressure: " + pressure + "hpa");
         tvSeaPressure.setText("Sea level pressure: " + seaPressure + "hpa");
         tvHumidity.setText("Humidty: " + humidity + "%");
         tvSkyStatus.setText("Sky description: " + skyStatus);
         tvCloudiness.setText("Cloudiness: " + cloudiness + "%");
-        tvWindSpeed.setText("Wind speed: " + windSpeed + "m/s");
+        System.out.println(unitsName);
+        String units = "";
+        if (unitsName.equals("metric")) {
+            units = "m/s";
+        }
+        else if (units.equals("imperial")) {
+            units = "m/s";
+        }
+        else {
+            units = "mls/h";
+        }
+        tvWindSpeed.setText("Wind speed: " + windSpeed + units);
         int iWindDirection = Integer.parseInt(windDirection);
         if (iWindDirection > 338 || iWindDirection <= 22) {
             windDirection = "North ↑";

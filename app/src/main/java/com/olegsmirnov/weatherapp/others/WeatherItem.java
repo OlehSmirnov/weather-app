@@ -15,10 +15,11 @@ public class WeatherItem implements Parcelable {
     private String windSpeed;
     private String skyStatus;
     private String cloudiness;
+    private String unitsName;
     private String windDirection;
 
     public WeatherItem(String date, String iconIdentifier, String temperature, String pressure, String seaPressure,
-                String humidity, String windSpeed, String skyStatus, String cloudiness, String windDirection) {
+                       String humidity, String windSpeed, String skyStatus, String cloudiness, String unitsName, String windDirection) {
         this.date = date;
         this.iconIdentifier = iconIdentifier;
         this.temperature = temperature;
@@ -28,6 +29,7 @@ public class WeatherItem implements Parcelable {
         this.windSpeed = windSpeed;
         this.skyStatus = skyStatus;
         this.cloudiness = cloudiness;
+        this.unitsName = unitsName;
         this.windDirection = windDirection;
     }
 
@@ -73,6 +75,10 @@ public class WeatherItem implements Parcelable {
         parcel.writeString(cloudiness);
         parcel.writeString(windSpeed);
         parcel.writeString(windDirection);
+    }
+
+    public String getUnitsName() {
+        return unitsName;
     }
 
     public String getName() {

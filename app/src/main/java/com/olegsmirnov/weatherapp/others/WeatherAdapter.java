@@ -1,8 +1,5 @@
 package com.olegsmirnov.weatherapp.others;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -14,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.olegsmirnov.weatherapp.R;
-import com.olegsmirnov.weatherapp.data.WeatherContract;
-import com.olegsmirnov.weatherapp.data.WeatherDbHelper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -38,11 +33,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tvDate.setText(mList.get(position).getDate());
-        new DownloadImageTask(holder.ivIcon).execute("http://openweathermap.org/img/w/" + mList.get(position).getIconIdentifier() + ".png");;
+        new DownloadImageTask(holder.ivIcon).execute("http://openweathermap.org/img/w/" + mList.get(position).getIconIdentifier() + ".png");
+        String units = "";
+        if (mList.get(position).getUnitsName().equals("imperial")) {
+            units = "mls/h";
+        }
+        else {
+            units = "m/s";
+        }
         holder.tvTemperature.setText(mList.get(position).getTemperature()  + "°");
         holder.tvPressure.setText("pressure:" + mList.get(position).getPressure() + "hpa");
         holder.tvHumidity.setText("humidity:" + mList.get(position).getHumidity() + "%");
-        holder.tvWindSpeed.setText(mList.get(position).getWindSpeed() + "m/s");
+        holder.tvWindSpeed.setText(mList.get(position).getWindSpeed() + units);
     }
 
     @Override
@@ -95,23 +97,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.MyViewHo
         }
 
         protected Bitmap doInBackground(String... urls) {
-            if (bmImage != null) {
-                String urldisplay = urls[0];
-                Bitmap mIcon = null;
-                try {
-                    InputStream in = new java.net.URL(urldisplay).openStream();
-                    mIcon = BitmapFactory.decodeStream(in);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return mIcon;
+            String urldisplay = urls[0];
+            Bitmap mIcon = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            else return null;
+            return mIcon;
         }
-
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
-
     }
 }
