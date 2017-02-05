@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:layout_width="600dp"
+        android:layout_height="match_parent"
+        android:name="com.olegsmirnov.weatherapp.fragments.MainFragment"
+        tools:layout="@layout/fragment_main" />
+
+    <fragment
+        android:id="@id/fragmentDetails"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:name="com.olegsmirnov.weatherapp.fragments.DetailsFragment"
+        tools:layout="@layout/fragment_details" />
+
+</LinearLayout>

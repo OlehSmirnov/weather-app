@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:id="@+id/RV_item_date"
-        android:layout_marginLeft="260dp"
-        android:layout_marginStart="260dp" />
+        android:layout_marginLeft="235dp"
+        android:layout_marginStart="235dp" />
 
     <TextView
         android:text="Humidity"
@@ -51,8 +51,8 @@
         android:textSize="18sp"
         android:id="@+id/RV_item_humidity"
         android:layout_marginTop="60dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginLeft="200dp" />
+        android:layout_marginStart="235dp"
+        android:layout_marginLeft="235dp" />
 
     <ImageView
         android:id="@+id/RV_item_icon"
