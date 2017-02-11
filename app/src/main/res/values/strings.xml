@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">WeatherApp</string>
-    <string name="not_your_city">not your city?</string>
+    <string name="your_city">another city?</string>
 </resources>

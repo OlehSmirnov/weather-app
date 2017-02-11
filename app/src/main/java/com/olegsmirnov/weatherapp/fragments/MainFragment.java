@@ -18,14 +18,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.olegsmirnov.weatherapp.R;
-import com.olegsmirnov.weatherapp.others.WeatherAdapter;
-import com.olegsmirnov.weatherapp.others.WeatherItem;
+import com.olegsmirnov.weatherapp.adapters.WeatherAdapter;
+import com.olegsmirnov.weatherapp.entities.WeatherItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +63,12 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+        if (!isNetworkAvailable()) {
+            Toast.makeText(getContext(), "Internet connection is not available", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        }
         setHasOptionsMenu(true);
         final String PREFS_NAME = "MyPrefsFile";
         SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
@@ -85,29 +92,29 @@ public class MainFragment extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         }
-        if (!isNetworkAvailable()) {
-            Toast.makeText(getContext(), "Internet connection is not available", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-        }
         etInputField = (EditText) view.findViewById(R.id.editCityET);
         tvCityName = (TextView) view.findViewById(R.id.cityNameTV);
         tvCityName.setText(CITY_NAME);
+        Button bSearch = (Button) view.findViewById(R.id.button_find_city);
+        bSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CITY_NAME = String.valueOf(etInputField.getText());
+                if (isNetworkAvailable()) {
+                    new FetchWeatherData().execute();
+                }
+                else {
+                    Toast.makeText(getContext(), "Internet connection is not available", Toast.LENGTH_SHORT).show();
+                }
+                }
+
+        });
         etInputField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    etInputField.setText("");
-                } else {
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
                     CITY_NAME = String.valueOf(etInputField.getText());
-                    etInputField.setText(R.string.not_your_city);
-                    if (isNetworkAvailable()) {
-                        new FetchWeatherData().execute();
-                    }
-                    else {
-                        Toast.makeText(getContext(), "Internet connection is not available", Toast.LENGTH_SHORT).show();
-                    }
+                    new FetchWeatherData().execute();
                 }
             }
         });
@@ -181,30 +188,47 @@ public class MainFragment extends Fragment {
                 }
                 return weatherJsonObj;
             }
+            Toast.makeText(getContext(), "Internet connection is not available", Toast.LENGTH_SHORT).show();
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            System.out.println(s);
             if (s != null) {
                 try {
                     JSONObject dataJsonObj = new JSONObject(s);
                     CITY_NAME = dataJsonObj.getJSONObject("city").getString("name");
+                    if (!CITY_NAME.toLowerCase().equals(etInputField.getText().toString().toLowerCase())
+                            && !etInputField.getText().toString().isEmpty()) {
+                        Toast.makeText(getContext(), "Incorrect city name, close result was shown", Toast.LENGTH_SHORT).show();
+                    }
                     tvCityName.setText(CITY_NAME);
                     weatherItems = new ArrayList<>();
                     JSONArray mainWeatherList = dataJsonObj.getJSONArray("list");
                     for (int i = 0; i < mainWeatherList.length(); i++) {
                         JSONObject weatherListItem = mainWeatherList.getJSONObject(i);
-                        String unformatedDate = weatherListItem.getString("dt_txt");
+                        String unformattedDate = weatherListItem.getString("dt_txt");
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                        Date myDate = formatter.parse(unformatedDate);
+                        Date myDate = formatter.parse(unformattedDate);
                         formatter.applyPattern("EEEE HH:mm");
                         String date = formatter.format(myDate);
 
                         int cloudiness = weatherListItem.getJSONObject("clouds").getInt("all");
                         JSONObject weatherListItemMain = weatherListItem.getJSONObject("main");
-                        int temperature = weatherListItemMain.getInt("temp");
+                        String temperature = String.valueOf(weatherListItemMain.getInt("temp"));
+                        switch (UNITS_NAME) {
+                            case "metric":
+                                temperature += "°C";
+                                break;
+                            case "default":
+                                temperature += "°K";
+                                break;
+                            case "imperial":
+                                temperature += "°F";
+                                break;
+                        }
                         int pressure = weatherListItemMain.getInt("pressure");
                         int seaPressure = weatherListItemMain.getInt("sea_level");
                         int humidity = weatherListItemMain.getInt("humidity");
@@ -217,7 +241,7 @@ public class MainFragment extends Fragment {
                         JSONObject windInfoItem = weatherListItem.getJSONObject("wind");
                         int windSpeed = windInfoItem.getInt("speed");
                         int windDirection = windInfoItem.getInt("deg");
-                        WeatherItem item = new WeatherItem(date, iconIdentifier, String.valueOf(temperature), String.valueOf(pressure), String.valueOf(seaPressure),
+                        WeatherItem item = new WeatherItem(date, iconIdentifier, temperature, String.valueOf(pressure), String.valueOf(seaPressure),
                                 String.valueOf(humidity), String.valueOf(windSpeed), skyStatus, String.valueOf(cloudiness), UNITS_NAME, String.valueOf(windDirection));
                         weatherItems.add(item);
                     }
@@ -238,9 +262,13 @@ public class MainFragment extends Fragment {
                     });
 
                 } catch (JSONException | ParseException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Incorrect city name", Toast.LENGTH_SHORT).show();
                 }
             }
+            else {
+                Toast.makeText(getContext(), "Incorrect city name", Toast.LENGTH_SHORT).show();
+            }
+            etInputField.setText("");
         }
     }
     @Override

@@ -3,6 +3,8 @@ package com.olegsmirnov.weatherapp.activities;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.olegsmirnov.weatherapp.R;
 import com.olegsmirnov.weatherapp.fragments.DetailsFragment;
@@ -28,6 +30,15 @@ public class DetailsActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            getSupportActionBar().hide();
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbar.setNavigationIcon(R.drawable.back_button);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
         }
 
         if (getIntent() != null) {

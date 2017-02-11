@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.olegsmirnov.weatherapp.R;
 
@@ -29,6 +31,7 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_details, container, false);
+
     }
 
     @Override
@@ -46,7 +49,7 @@ public class DetailsFragment extends Fragment {
 
     public void updateContent(String temperature, String pressure, String seaPressure, String humidity, String skyStatus,
                               String cloudiness, String windSpeed, String unitsName, String windDirection) {
-        tvTemperature.setText("Temperature: " + temperature + "°");
+        tvTemperature.setText("Temperature: " + temperature);
         tvPressure.setText("Pressure: " + pressure + "hpa");
         tvSeaPressure.setText("Sea level pressure: " + seaPressure + "hpa");
         tvHumidity.setText("Humidty: " + humidity + "%");
@@ -54,14 +57,11 @@ public class DetailsFragment extends Fragment {
         tvCloudiness.setText("Cloudiness: " + cloudiness + "%");
         System.out.println(unitsName);
         String units = "";
-        if (unitsName.equals("metric")) {
-            units = "m/s";
-        }
-        else if (units.equals("imperial")) {
-            units = "m/s";
+        if (unitsName.equals("imperial")) {
+            units = "mls/h";
         }
         else {
-            units = "mls/h";
+            units = "m/s";
         }
         tvWindSpeed.setText("Wind speed: " + windSpeed + units);
         int iWindDirection = Integer.parseInt(windDirection);

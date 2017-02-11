@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.olegsmirnov.weatherapp.R;
-import com.olegsmirnov.weatherapp.others.WeatherItem;
+import com.olegsmirnov.weatherapp.entities.WeatherItem;
 import com.olegsmirnov.weatherapp.fragments.DetailsFragment;
 import com.olegsmirnov.weatherapp.fragments.MainFragment;
 

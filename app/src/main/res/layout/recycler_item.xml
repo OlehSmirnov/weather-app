@@ -32,8 +32,8 @@
         android:textSize="18sp"
         android:layout_marginTop="20dp"
         android:id="@+id/RV_item_windSpeed"
-        android:layout_marginLeft="160dp"
-        android:layout_marginStart="160dp" />
+        android:layout_marginLeft="165dp"
+        android:layout_marginStart="165dp" />
 
     <TextView
         android:text="Date"
@@ -77,9 +77,9 @@
         android:layout_height="50dp"
         app:srcCompat="@drawable/wind"
         android:id="@+id/imageView"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="110dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="100dp"
+        android:layout_marginLeft="110dp"
         android:layout_marginTop="5dp" />
 
 </RelativeLayout>

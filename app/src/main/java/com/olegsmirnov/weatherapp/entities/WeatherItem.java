@@ -1,4 +1,4 @@
-package com.olegsmirnov.weatherapp.others;
+package com.olegsmirnov.weatherapp.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;

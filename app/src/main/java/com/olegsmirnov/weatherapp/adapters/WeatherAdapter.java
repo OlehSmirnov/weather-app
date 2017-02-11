@@ -1,4 +1,4 @@
-package com.olegsmirnov.weatherapp.others;
+package com.olegsmirnov.weatherapp.adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.olegsmirnov.weatherapp.R;
+import com.olegsmirnov.weatherapp.entities.WeatherItem;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -34,17 +35,17 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.MyViewHo
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tvDate.setText(mList.get(position).getDate());
         new DownloadImageTask(holder.ivIcon).execute("http://openweathermap.org/img/w/" + mList.get(position).getIconIdentifier() + ".png");
-        String units = "";
-        if (mList.get(position).getUnitsName().equals("imperial")) {
-            units = "mls/h";
-        }
-        else {
-            units = "m/s";
-        }
-        holder.tvTemperature.setText(mList.get(position).getTemperature()  + "°");
+        holder.tvTemperature.setText(mList.get(position).getTemperature());
         holder.tvPressure.setText("pressure:" + mList.get(position).getPressure() + "hpa");
         holder.tvHumidity.setText("humidity:" + mList.get(position).getHumidity() + "%");
-        holder.tvWindSpeed.setText(mList.get(position).getWindSpeed() + units);
+        String unitsWind = "";
+        if (mList.get(position).getUnitsName().equals("imperial")) {
+            unitsWind = "mls/h";
+        }
+        else {
+            unitsWind = "m/s";
+        }
+        holder.tvWindSpeed.setText(mList.get(position).getWindSpeed() + unitsWind);
     }
 
     @Override
