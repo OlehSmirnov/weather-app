@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:orderInCategory="1"
+        android:id="@+id/menu_fahrenheit"
+        android:title="°F"
+        app:showAsAction="always" />
+
+    <item
+        android:orderInCategory="2"
+        android:id="@+id/menu_kelvin"
+        android:title="°K"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_celsius"
+        android:orderInCategory="3"
+        android:title="°C"
+        app:showAsAction="always" />
+
+    <item
+        android:orderInCategory="4"
+        android:id="@+id/menu_update"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title=""
+        app:showAsAction="always" />
+
+</menu>
