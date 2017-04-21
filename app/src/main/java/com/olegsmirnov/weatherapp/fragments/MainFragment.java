@@ -70,28 +70,6 @@ public class MainFragment extends Fragment {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         }
         setHasOptionsMenu(true);
-        final String PREFS_NAME = "MyPrefsFile";
-        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
-        if (settings.getBoolean("my_first_time", true)) {
-            final View customView = (LinearLayout) getLayoutInflater(savedInstanceState)
-                    .inflate(R.layout.dialog, null);
-            settings.edit().putBoolean("my_first_time", false).apply();
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Input your city here")
-                    .setCancelable(false)
-                    .setView(customView)
-                    .setNegativeButton("ОК",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                    EditText et = (EditText) customView.findViewById(R.id.et_dialog_city_name);
-                                    CITY_NAME = et.getText().toString();
-                                    new FetchWeatherData().execute();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
         etInputField = (EditText) view.findViewById(R.id.editCityET);
         tvCityName = (TextView) view.findViewById(R.id.cityNameTV);
         tvCityName.setText(CITY_NAME);
@@ -193,9 +171,8 @@ public class MainFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String s){
             super.onPostExecute(s);
-            System.out.println(s);
             if (s != null) {
                 try {
                     JSONObject dataJsonObj = new JSONObject(s);
@@ -279,7 +256,29 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new FetchWeatherData().execute();
+        final String PREFS_NAME = "MyPrefsFile";
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+        if (settings.getBoolean("my_first_time", true)) {
+            final View customView = (LinearLayout) getLayoutInflater(savedInstanceState)
+                    .inflate(R.layout.dialog, null);
+            settings.edit().putBoolean("my_first_time", false).apply();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Input your city here")
+                    .setCancelable(false)
+                    .setView(customView)
+                    .setNegativeButton("ОК",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    EditText et = (EditText) customView.findViewById(R.id.et_dialog_city_name);
+                                    CITY_NAME = et.getText().toString();
+                                    new FetchWeatherData().execute();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else new FetchWeatherData().execute();
     }
 
 
